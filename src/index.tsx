@@ -1,8 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import App from "./App";
 import "./index.css";
-import AudioKeyInputTest from "./react/AudioKeyInputTest";
-import AudioTestsDisplay from "./react/AudioTestsDisplay";
 import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(
@@ -10,10 +9,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
     <React.StrictMode>
-        <div>
-            <AudioKeyInputTest/>
-            <AudioTestsDisplay/>
-        </div>
+        <App />
     </React.StrictMode>
 );
 
