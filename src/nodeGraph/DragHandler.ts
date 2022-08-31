@@ -33,7 +33,7 @@ export default class DragHandler {
         if (!this.watchingElt) throw new Error("Cannot unwatch when there is not element to unwatch.");
         const elt = this.watchingElt;
         delete this.watchingElt;
-        
+
         elt.removeEventListener("mousedown",  this.onMouseDown,  {capture:true});
         elt.removeEventListener("mouseup",    this.onMouseUp,    {capture:true});
         elt.removeEventListener("mousemove",  this.onMouseMove,  {capture:true});
@@ -83,7 +83,7 @@ export default class DragHandler {
 
     private updateMousePos(e:MouseEvent) {
         const {clientWidth,clientHeight,clientTop,clientLeft} = this.watchingElt!;
-        
+
         this.lastPosRaw = this.posRaw;
         this.posRaw = new Vec(
             e.clientX - clientLeft - clientWidth  * 0.5,
@@ -91,7 +91,7 @@ export default class DragHandler {
         );
     }
 
-    private afterUpdateModifiers() {        
+    private afterUpdateModifiers() {
         this.updateDrags();
     }
 

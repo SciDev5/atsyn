@@ -8,7 +8,6 @@ import NodeShape from "./NodeShape";
 import { NodeUpdateEv } from "./NodeUpdateEv";
 import PortShape from "./PortShape";
 import PortJSX from "./PortJSX";
-import symbolMapValues from "../util/symbolMapValues";
 import { Connection } from "./Connection";
 import { css } from "@emotion/css";
 import { PortEitherSide } from "./Port";
@@ -16,6 +15,8 @@ import { PortSide } from "./PortSide";
 import DragHandler, { Drag } from "./DragHandler";
 import NodeGraphConsts from "./NodeGraphConsts";
 import MathX from "../util/MathX";
+import Arr from "../util/Arr";
+import AddNodeMenu from "./AddNodeMenu";
 
 function BackgroundGrid(props:{pan:Vec,scale:number}) {
     const scale = 10**MathX.floorMod(Math.log10(props.scale),1);
@@ -42,7 +43,7 @@ function BackgroundGrid(props:{pan:Vec,scale:number}) {
 
     return (
         <div ref={resizeRef} className={css({
-            
+
             position: "absolute",
             left: 0,
             top: 0,
@@ -84,6 +85,7 @@ export default class NodesViewport extends React.Component<{
     nodeContext:NodeContext,
     width:number|string,
     height:number|string,
+    lockConnections?:boolean,
 },{
     connections:ConnectionShape[],
     nodes:NodeShape[],
@@ -113,7 +115,7 @@ export default class NodesViewport extends React.Component<{
     maxDim:Vec = new Vec(0,0);
     minDim:Vec = new Vec(0,0);
     private recalculateMaxDim() {
-        const nodes = symbolMapValues(this.nodeContext.nodes), firstNodeShape = nodes[0]?.shape._;
+        const nodes = [...this.nodeContext.nodes], firstNodeShape = nodes[0]?.shape._;
         this.maxDim = firstNodeShape?.maxPos ?? new Vec(0,0);
         this.minDim = firstNodeShape?.pos ?? new Vec(0,0);
         this.updateMaxDim(nodes);
@@ -153,7 +155,7 @@ export default class NodesViewport extends React.Component<{
         this.dragHandler.unwatch();
     }
     private get nodeStates() {
-        const nodes = symbolMapValues(this.nodeContext.nodes);
+        const nodes = [...this.nodeContext.nodes];
         return {
             nodes: nodes.map(v=>v.shape._),
             ports: nodes.flatMap(v=>v.allPorts).map(v=>v.shape._),
@@ -161,7 +163,7 @@ export default class NodesViewport extends React.Component<{
     }
     private get connStates() {
         return {
-            connections:symbolMapValues(this.nodeContext.connections).map(v=>v.shape._),
+            connections:[...this.nodeContext.connections].map(v=>v.shape._),
         };
     }
     private readonly onChangeNode = (node:Node)=>{
@@ -208,7 +210,7 @@ export default class NodesViewport extends React.Component<{
                     overflow:"clip",
                     background: "#101010",
                 })}
-                
+
                 onMouseDown={e=>{
                     switch(e.button) {
                     case 0:
@@ -236,7 +238,7 @@ export default class NodesViewport extends React.Component<{
                     );
                 }}
                 onWheel={e=>{
-                    const newScale = scale*2**(NodeGraphConsts.scrollSpeed*e.deltaY);
+                    const newScale = Math.min(10,Math.max(0.5,scale*2**(NodeGraphConsts.scrollSpeed*e.deltaY)));
                     this.setState({scale:newScale});
                     this.dragHandler.scale = newScale;
                 }}
@@ -270,18 +272,25 @@ export default class NodesViewport extends React.Component<{
                         ))}
                         {connections.map(v=>(
                             <ConnectionJSX key={v.ref.strId}
-                                off={svgOff} 
+                                locked={this.props.lockConnections ?? false}
+                                off={svgOff}
                                 shape={v}
                             />
                         ))}
-                        {this.state.makingConnection && (
-                            <ConnectionJSX 
+                        {this.state.makingConnection && !this.props.lockConnections && (
+                            <ConnectionJSX
                                 off={svgOff}
-                                shape={new ConnectionShape(
-                                    null!,
-                                    this.state.makingConnection.from,
-                                    this.bestConnectionTarget?.shape._ ?? ({pos:this.state.makingConnection.toPos} as PortShape),
+                                preview
+                                points={Arr.conditionalReverse(
+                                    [
+                                        this.state.makingConnection.from.pos,
+                                        this.bestConnectionTarget?.shape._.pos ?? this.state.makingConnection.toPos,
+                                    ],
+                                    this.state.makingConnection.from.ref.side === PortSide.INPUT,
                                 )}
+                                connectionPossible={
+                                    !!this.bestConnectionTarget
+                                }
                             />
                         )}
                         {ports.map(v=>(
@@ -292,8 +301,11 @@ export default class NodesViewport extends React.Component<{
                                     this.setState({makingConnection:{from,toPos}});
                                 }}
                                 tryMakeConnection={()=>{
-                                    const {makingConnection} = this.state, {bestConnectionTarget} = this;
                                     this.setState({makingConnection:undefined});
+
+                                    if (this.props.lockConnections) return;
+
+                                    const {makingConnection} = this.state, {bestConnectionTarget} = this;
                                     if (makingConnection && bestConnectionTarget !== undefined) {
                                         const from = makingConnection.from.ref as PortEitherSide, to = bestConnectionTarget;
                                         if (from.side === PortSide.OUTPUT && to.side === PortSide.INPUT)
@@ -305,11 +317,18 @@ export default class NodesViewport extends React.Component<{
                                 setAllowConnection={(port,allowed)=>{
                                     this.possibleConnectionTargets[allowed ? "add" : "delete"](port);
                                 }}
-                                makingConnectionFrom={this.state.makingConnection?.from}
+                                makingConnectionFrom={this.props.lockConnections ? undefined : this.state.makingConnection?.from}
                             />
                         ))}
                     </svg>
                 </div>
+                <AddNodeMenu
+                    addNode={NodeClass=>{
+                        new NodeClass(this.props.nodeContext,this.dragHandler.pos);
+
+                    }}
+                    context={this.props.nodeContext}
+                />
             </div>
         );
     }

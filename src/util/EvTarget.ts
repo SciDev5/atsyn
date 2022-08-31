@@ -7,7 +7,7 @@ type KeysWithVoidValues<T extends EvMap> = {[K in keyof T]: [void] extends [T[K]
 export class EvSource<T extends EvMap> {
     private handlers:EvHandlerMap<T> = {};
     private onceHandlers:EvHandlerMap<T> = {};
-    
+
     readonly target = new EvTarget(this.handlers,this.onceHandlers);
 
     dispatch<K extends KeysWithVoidValues<T>>(evName:K):void;

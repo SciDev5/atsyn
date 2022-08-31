@@ -1,3 +1,5 @@
+import ReverseType from "./ReverseType";
+
 export default class Arr {
     public static genByI<T>(len:number,filler:(i:number)=>T):T[] {
         if (len === 0) return [];
@@ -28,5 +30,9 @@ export default class Arr {
 
     public static randomSample<T>(arr:T[]|readonly T[]):T {
         return arr[Math.floor(Math.random()*arr.length)];
+    }
+
+    public static conditionalReverse<T extends unknown[]>(arr:T,reverse:boolean):ReverseType<T>|T {
+        return reverse ? (arr.reverse() as ReverseType<T>) : arr;
     }
 }

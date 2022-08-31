@@ -23,6 +23,7 @@
     "rules": {
         "indent": [ "warn", 4 ],
         "quotes": [ "warn", "double" ],
+        "no-trailing-spaces": [ "warn" ],
         "@typescript-eslint/semi": ["warn", "always", { "omitLastInOneLineBlock": true }],
         "curly": ["warn", "multi", "consistent"],
         "eqeqeq": "warn",

@@ -27,12 +27,12 @@ export default class RangeOf {
     private constraints:RangeConstraint[][] = [[]]; // or-ed group of and-ed groups of constraints
     private nextOpIsOr = false;
 
-    
-    private addConstraint(constraint:RangeConstraint) {        
+
+    private addConstraint(constraint:RangeConstraint) {
         if (this.nextOpIsOr)
             this.constraints.push([]);
         this.nextOpIsOr = false;
-        
+
         this.constraints[this.constraints.length-1].push(constraint);
         return this;
     }
@@ -60,7 +60,7 @@ export default class RangeOf {
     public greaterThanOrEqualTo  (value:number) { return this.addConstraint(new RangeConstraintInequality(value,true, true )) }
     public equalTo               (value:number) { return this.addConstraint(new RangeConstraintEquality(value,false)) }
     public notEqualTo            (value:number) { return this.addConstraint(new RangeConstraintEquality(value,true )) }
-    
+
     public after(value:number) { return this.greaterThan(value) }
     public until(value:number) { return this.lessThan(value) }
     public from(value:number) { return this.greaterThanOrEqualTo(value) }
@@ -73,4 +73,4 @@ export default class RangeOf {
             )
         );
     }
-} 
+}

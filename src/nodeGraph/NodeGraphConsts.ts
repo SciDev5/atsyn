@@ -7,4 +7,7 @@ export default class NodeGraphConsts {
     } as const;
 
     static readonly scrollSpeed = 0.003;
+
+    static readonly rowPaddingBlock = 2;
+    static readonly rowBorderTop = 1;
 }

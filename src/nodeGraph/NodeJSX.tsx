@@ -2,10 +2,11 @@ import { css } from "@emotion/css";
 import React, { useEffect, useRef, useState } from "react";
 import Vec from "../util/Vec";
 import DragHandler, { Drag } from "./DragHandler";
+import NodeGraphConsts from "./NodeGraphConsts";
 import NodeShape from "./NodeShape";
 
 export default function NodeJSX(props:{off:Vec,dragHandler:DragHandler,shape:NodeShape}) {
-    const 
+    const
         { shape } = props,
         { pos } = shape,
         borderWidth = 1.5,
@@ -16,11 +17,11 @@ export default function NodeJSX(props:{off:Vec,dragHandler:DragHandler,shape:Nod
 
     const [drag,setDrag] = useState<boolean>(false);
 
-    const {HeaderComponent} = shape.ref;
+    const {Header} = shape.ref;
 
     const resizeRef = useRef() as React.RefObject<HTMLDivElement>;
     useEffect(()=>{
-        const 
+        const
             elt = resizeRef.current!,
             observer = new ResizeObserver(()=>{
                 shape.ref.width = elt.offsetWidth-2*borderWidth;
@@ -50,8 +51,10 @@ export default function NodeJSX(props:{off:Vec,dragHandler:DragHandler,shape:Nod
                 <div
                     className={css({
                         height:shape.hdrHeight,
+                        lineHeight:shape.hdrHeight+"px",
                         backgroundColor: drag ? "#00ffff" : "#0000ff",
                         userSelect: "none",
+                        paddingInline: ".5em",
                     })}
                     onMouseDown={e=>{
                         if (e.altKey) return;
@@ -64,7 +67,7 @@ export default function NodeJSX(props:{off:Vec,dragHandler:DragHandler,shape:Nod
                             },
                             (pos,_,modifiers)=>{
                                 const newPos = posOff.plus(pos);
-                                shape.ref.pos = modifiers.ctrl ? 
+                                shape.ref.pos = modifiers.ctrl ?
                                     newPos.roundSnap(50) :
                                     newPos;
                             },
@@ -74,17 +77,22 @@ export default function NodeJSX(props:{off:Vec,dragHandler:DragHandler,shape:Nod
                         );
                     }}
                 >
-                    < HeaderComponent />
+                    {typeof Header === "string" ?
+                        Header :
+                        <Header />
+                    }
                 </div>
                 {shape.rows.map((row,i)=>{
                     const Row = row.Component;
                     return (
-                        <div key={i} className={css(
-                            { height: row.height },
+                        <div key={i} className={css({
+                            height: row.height,
+                            paddingBlock: NodeGraphConsts.rowPaddingBlock,
+                        })+" "+css(
                             {
                                 marginInline: 7,
-                                borderTop: "1px solid #777777",
-                                boxSizing: "border-box",
+                                borderTop: NodeGraphConsts.rowBorderTop+"px solid #777777",
+                                boxSizing: "content-box",
                             },
                         )}>
                             <Row />

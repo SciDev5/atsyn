@@ -137,7 +137,7 @@ export default class Ensure<T> {
             `be in range [${range}]`
         );
     }
-    
+
 
     private ifNotThenVarFailed(condition:boolean,message:EnMessage,customMessage?:string):EnAnd<T> {
         if (!condition !== this.inverted) // `!==` behaves like XOR with booleans

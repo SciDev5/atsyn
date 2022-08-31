@@ -49,5 +49,5 @@ export default class Vec {
             Math.round(this.x / granularity) * granularity,
             Math.round(this.y / granularity) * granularity,
         );
-    } 
+    }
 }

@@ -14,12 +14,15 @@ export class Connection {
             disconnect: (conn: Connection) => void;
             disconnectPort: () => void;
         }
-    ) {}
+    ) {
+        if (from.node.context !== to.node.context)
+            throw new Error("two nodes from different contexts were connected. this is not allowed.");
+    }
 
-    
+
     private _wasDisconnected = false;
     public get isDisconnected() { return this._wasDisconnected }
-    
+
     disconnect() {
         this._wasDisconnected = true;
         this.on.disconnectPort();
