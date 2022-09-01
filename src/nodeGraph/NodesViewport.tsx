@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import Vec from "../util/Vec";
 import ConnectionJSX from "./ConnectionJSX";
 import { ConnectionShape } from "./ConnectionShape";
 import Node, { NodeContext } from "./Node";
@@ -14,9 +13,8 @@ import { PortEitherSide } from "./Port";
 import { PortSide } from "./PortSide";
 import DragHandler, { Drag } from "./DragHandler";
 import NodeGraphConsts from "./NodeGraphConsts";
-import MathX from "../util/MathX";
-import Arr from "../util/Arr";
 import AddNodeMenu from "./AddNodeMenu";
+import { Arr, MathX, Vec } from "@scidev5/util-h";
 
 function BackgroundGrid(props:{pan:Vec,scale:number}) {
     const scale = 10**MathX.floorMod(Math.log10(props.scale),1);

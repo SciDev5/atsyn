@@ -1,6 +1,6 @@
 import { css } from "@emotion/css";
+import { Vec } from "@scidev5/util-h";
 import React, { useEffect, useState } from "react";
-import Vec from "../util/Vec";
 import DragHandler, { Drag } from "./DragHandler";
 import { PortEitherSide } from "./Port";
 import PortShape from "./PortShape";

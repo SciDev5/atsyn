@@ -1,5 +1,5 @@
+import { ValueSource } from "@scidev5/util-h";
 import { NodeContext } from "../nodeGraph/Node";
-import { ValueSource } from "../util/ValueTarget";
 import AudioGraphNode from "./AudioGraphNode";
 import DestGraphNode from "./impl/DestGraphNode";
 import GainGraphNode from "./impl/GainGraphNode";

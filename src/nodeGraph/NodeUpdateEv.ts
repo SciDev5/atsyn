@@ -1,4 +1,4 @@
-import EnumType from "../util/EnumType";
+import { EnumType } from "@scidev5/util-h";
 
 export class NodeUpdateEv {
     static readonly node = Symbol();

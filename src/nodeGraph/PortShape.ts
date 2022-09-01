@@ -1,4 +1,4 @@
-import Vec from "../util/Vec";
+import { Vec } from "@scidev5/util-h";
 import Port from "./Port";
 import { TPortSide } from "./PortSide";
 

@@ -1,4 +1,4 @@
-import genStrId from "../util/genStrId";
+import { Random } from "@scidev5/util-h";
 import { ConnectionShape as ConnectionShape } from "./ConnectionShape";
 import Port from "./Port";
 import { PortSide } from "./PortSide";
@@ -6,7 +6,7 @@ import ShapeGen from "./ShapeGen";
 
 export class Connection {
     readonly id = Symbol();
-    readonly strId = genStrId();
+    readonly strId = Random.strFast();
     constructor(
         readonly from: Port<typeof PortSide["OUTPUT"]>,
         readonly to: Port<typeof PortSide["INPUT"]>,

@@ -1,6 +1,6 @@
 import { css, CSSInterpolation } from "@emotion/css";
+import { Vec } from "@scidev5/util-h";
 import React, { useEffect, useState } from "react";
-import Vec from "../util/Vec";
 import { ConnectionShape } from "./ConnectionShape";
 
 export default function ConnectionJSX(props:{off:Vec}&({preview?:false,shape:ConnectionShape,locked:boolean}|{preview:true,points:[Vec,Vec],connectionPossible:boolean})) {

@@ -1,7 +1,6 @@
 import { css } from "@emotion/css";
+import { Keybind, useKeybind, useMouseScreenPos } from "@scidev5/util-h";
 import React, { useState } from "react";
-import useKeybind, { Keybind } from "../util/useKeybind";
-import useMouseScreenPos from "../util/useMouseScreenPos";
 import { NodeClass, NodeContext } from "./Node";
 
 export default function AddNodeMenu(props:{

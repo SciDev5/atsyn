@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import Vec from "../util/Vec";
+
+import { Vec } from "@scidev5/util-h";
 
 type Buttons = {
     readonly shift  :boolean,

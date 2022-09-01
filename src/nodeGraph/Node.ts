@@ -1,9 +1,5 @@
+import { EvSource, Random, SymbolMap, symbolMapValues, Vec } from "@scidev5/util-h";
 import React from "react";
-import { EvSource } from "../util/EvTarget";
-import genStrId from "../util/genStrId";
-import SymbolMap from "../util/SymbolMap";
-import symbolMapValues from "../util/symbolMapValues";
-import Vec from "../util/Vec";
 import { Connection } from "./Connection";
 import NodeShape from "./NodeShape";
 import { NodeUpdateEv } from "./NodeUpdateEv";
@@ -22,7 +18,7 @@ export type RowInitData<N extends Node> = {
 
 export default abstract class Node {
     abstract readonly Header: string | React.ComponentType<{[k:string]:never}>;
-    readonly strId = genStrId();
+    readonly strId = Random.strFast();
     readonly id = Symbol();
     private readonly ports:{readonly [side in TPortSide]: Set<Port<side>>} = {
         [PortSide.INPUT  ]: new Set,

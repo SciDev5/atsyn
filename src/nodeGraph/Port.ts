@@ -1,5 +1,4 @@
-import genStrId from "../util/genStrId";
-import { ValueSource } from "../util/ValueTarget";
+import { Random, ValueSource } from "@scidev5/util-h";
 import { Connection } from "./Connection";
 import Node from "./Node";
 import PortShape from "./PortShape";
@@ -10,7 +9,7 @@ import ShapeGen from "./ShapeGen";
 export type PortEitherSide = Port<typeof PortSide["INPUT"]>|Port<typeof PortSide["OUTPUT"]>;
 export default class Port<S extends TPortSide> {
     readonly id = Symbol();
-    readonly strId = genStrId();
+    readonly strId = Random.strFast();
     constructor(
         readonly side:S,
         readonly row:Row,

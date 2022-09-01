@@ -1,4 +1,4 @@
-import Vec from "../util/Vec";
+import { Vec } from "@scidev5/util-h";
 import Node from "./Node";
 import NodeGraphConsts from "./NodeGraphConsts";
 import { PortSide, TPortSide } from "./PortSide";

@@ -1,9 +1,9 @@
 import { css } from "@emotion/css";
+import { ValueSource, ValueTarget } from "@scidev5/util-h";
 import React from "react";
 import Styles from "../../../css/Styles";
 import Node, { RowInitData } from "../../../nodeGraph/Node";
 import Row from "../../../nodeGraph/Row";
-import ValueTarget, { ValueSource } from "../../../util/ValueTarget";
 
 export default class SelectRow<O extends { [key: string]: string; }> extends Row {
     private readonly options: O;

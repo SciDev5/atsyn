@@ -1,10 +1,10 @@
 import { css } from "@emotion/css";
+import { ValueSource, ValueTarget } from "@scidev5/util-h";
 import React, { useId, useState } from "react";
 import Styles from "../../../css/Styles";
 import Node, { RowInitData } from "../../../nodeGraph/Node";
 import { PortSide } from "../../../nodeGraph/PortSide";
 import Row from "../../../nodeGraph/Row";
-import ValueTarget, { ValueSource } from "../../../util/ValueTarget";
 
 export default class InputRow extends Row {
     constructor(
